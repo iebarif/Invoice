@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="invoice-container" id="invoice">
+      <!-- Invoice Header -->
+      <div class="invoice-header">
+        <h1 id="invoiceTitle"></h1>
+        
+      <!-- Invoice Details -->
+      <div class="invoice-details">
+        <table>
+          <tbody>
+            <tr>
+              <th id>Invoice Number:</th>
+              <td id="invoiceNumber"></td>
+            </tr>
+            <tr>
+              <th>Date:</th>
+              <td id="invoiceDate"></td>
+            </tr>
+            <tr>
+              <th>Due Date:</th>
+              <td id="invoiceDueDate"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Client Information -->
+      <div class="client-info">
+        <h2>Bill To:</h2>
+        <p id="clientName"></p>
+        <p id="clientAddress"></p>
+      </div>
+
+      <!-- Items Table -->
+
+      <div class="items">
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody id="itemsBody">
+            <!-- Dynamic Invoice Items will Be Injected Here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Grand Total  -->
+      <div class="total" id="grandTotal">Grand Total: $0.00</div>
+
+      <!-- Notes -->
+      <div class="notes">
+        <h3>Notes:</h3>
+        <p id="InvoiceNotes"></p>
+      </div>
+    </div>
+
+    <!-- <button style="margin-top: 10px" id="click">Modify</button> -->
+
+    <script>
+      const invoiceData = {
+        title: "Invoice From office Supplies",
+        invoiceNumber: "INV-001",
+        date: "2023-10-01",
+        dueDate: "2023-10-15",
+        client: {
+          name: "Johe Doe",
+          address: "1234 Elm Street, Springfield, USA",
+        },
+        items: [
+          {
+            description: "Web Design Services ",
+            quantity: 10,
+            unitPrice: 50,
+          },
+          {
+            description: "Hosting (1 years) ",
+            quantity: 1,
+            unitPrice: 100,
+          },
+          
+          {
+            description: "Domain Name (1 years) ",
+            quantity: 1,
+            unitPrice: 10,
+          },
+        ],
+        notes: "Thank you for your business!",
+
+      };
+
+      function populateCommonItems(){
+        document.getElementById("invoiceTitle").innerText = invoiceData.title;
+        document.getElementById('invoiceNumber').innerText=invoiceData.invoiceNumber;
+        document.getElementById('invoiceDate').innerText=invoiceData.date;
+        document.getElementById('invoiceDueDate').innerText=invoiceData.dueDate;
+        document.getElementById('clientName').innerText=invoiceData.client.name;
+        document.getElementById('clientAddress').innerText=invoiceData.client.address;
+        document.getElementById('InvoiceNotes').innerText=invoiceData.notes;
+
+      }
+      function populateItems(){
+        const itemsBody=document.getElementById('itemsBody');
+        let grandTotal=0;
+        invoiceData.items.forEach(item=>{
+          const row =document.createElement('tr');
+          row.innerHTML=`
+          <td>${item.description}</td>
+          <td>${item.quantity}</td>
+          <td>$${item.unitPrice}</td>
+          <td>$${(item.quantity * item.unitPrice)}</td>
+          `;
+          itemsBody.appendChild(row);
+          grandTotal += item.quantity * item.unitPrice
+          document.getElementById('grandTotal').innerText=`Grand Total: $ ${grandTotal}`;
+        })
+      }
+
+      populateCommonItems();
+      populateItems();
+    </script>
+  </body>
+</html>
